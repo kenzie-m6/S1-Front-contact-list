@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod"
 
 export const schemaRegister = z.object({
     email: z.string().email("Invalid e-mail format").min(6).max(50),

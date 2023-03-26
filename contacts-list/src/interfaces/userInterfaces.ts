@@ -6,6 +6,7 @@ export interface IUser {
     secondaryEmail?: string | null | undefined;
     profileImg?: string | null | undefined;
     phoneSecondary?: string | null | undefined;
+    contacts: string[]
 }
 export interface IRegisterFormValues {
     email: string;
@@ -20,4 +21,13 @@ export interface IRegisterFormValues {
 export interface ILoginInput {
     email: string;
     password: string;
+}
+
+export interface IContacts {
+    email: string;
+    fullName: string;
+    phone: string;
+    secondaryEmail?: string | null | undefined;
+    profileImg?: string | null | undefined;
+    phoneSecondary?: string | null | undefined;
 }

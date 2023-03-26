@@ -1,62 +1,84 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IdefaultProviderProps } from "../interfaces/reactDefaultInterfaces";
 import {
+  IContacts,
   ILoginInput,
   IRegisterFormValues,
   IUser,
 } from "../interfaces/userInterfaces";
-import { api } from "../services/api";
-import { userLogin } from "../services/userLogin";
+import { Api } from "../services/api";
 
 interface IUserContext {
-loading: boolean;
-setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-user: IUser | null;
-onLogin: (data: ILoginInput) => Promise<void>;
-userLogout: () => Promise<void>;
-userRegister: (formData: IRegisterFormValues) => Promise<boolean>
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  user: IUser | null;
+  contacts: IContacts[]
+  setContacts: React.Dispatch<React.SetStateAction<IContacts[]>>
+  onLogin: (data: ILoginInput) => Promise<void>;
+  userLogout: () => Promise<void>;
+  userRegister: (formData: IRegisterFormValues) => Promise<void>;
 }
 
 export const UserContext = createContext({} as IUserContext);
+
 export const UserProvider = ({ children }: IdefaultProviderProps) => {
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("@TOKEN"));
   const [user, setUser] = useState<IUser | null>(null);
+  const [contacts, setContacts] = useState<IContacts[]>([]);
 
   const navigate = useNavigate();
 
-  const userRegister = async (formData: IRegisterFormValues) => {
+  const userRegister = async (formData: IRegisterFormValues): Promise<void> => {
     try {
-      const response = await api.post("/users", formData);
+      await Api.post("/users", formData);
+
       setLoading(true);
       toast.success("Cadastro realizado com sucesso.");
-      setUser(response.data);
-      localStorage.setItem("@userData", JSON.stringify(user));
       navigate("/");
-      return true;
     } catch (error) {
       console.log(error);
-      toast.error("Email já está em uso.");
-      return false;
     } finally {
       setLoading(false);
     }
   };
 
   const onLogin = async (data: ILoginInput) => {
-    const res = await userLogin(data);
-
-    if (res) {
-      navigate("/dashboard");
+    try {
+      const res = await Api.post("/login", data);
+  
+      toast.success("Login realizado com sucesso");
+  
+      localStorage.setItem("@TOKEN", res.data.token);
+      const userData = await Api.get("users/user")
+      setUser(userData.data)
+      setContacts(userData.data.contacts)
+      navigate("/dashboard")
+  
+    } catch (e) {
+      console.log(e);
+      toast.error("Acesso não autorizado.");
     }
   };
 
+  useEffect(() => {
+    !token && navigate("/");
+  }, []);
+
   const userLogout = async () => {
     setUser(null);
+    setToken(null)
     localStorage.removeItem("@TOKEN");
+
     navigate("/");
   };
-  return <UserContext.Provider value={{loading, setLoading, user, onLogin, userRegister, userLogout}}></UserContext.Provider>
+  return (
+    <UserContext.Provider
+      value={{ loading, setLoading, onLogin, user, contacts, setContacts, userRegister, userLogout }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };
-

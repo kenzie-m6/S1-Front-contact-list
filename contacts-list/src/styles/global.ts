@@ -16,9 +16,14 @@ export const Reset = createGlobalStyle`
         cursor: pointer;
     }
     li {
-        width: 90%;
+        width: fit-content;
+        padding: 10px;
         display: flex;
         gap: 1rem;
+        cursor: pointer;
+        border: 1px solid;
+        border-radius: 6px;
+        transition: 1s;
     }
 
     img {

@@ -4,6 +4,8 @@ import { IdefaultProviderProps } from "../interfaces/reactDefaultInterfaces";
 import { IContacts } from "../interfaces/userInterfaces";
 import { Api } from "../services/api";
 import { UserContext } from "./UserContext";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 
 interface IContactContext {
   addContacts: (data: IContacts) => Promise<void>;
@@ -14,23 +16,24 @@ interface IContactContext {
   isEditContactModalVisible: boolean;
   setEditContactModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   clickedContact: IContacts | null;
-  setClickedContact: React.Dispatch<React.SetStateAction< IContacts | null >>;
+  setClickedContact: React.Dispatch<React.SetStateAction<IContacts | null>>;
 }
 
 export const ContactsContext = createContext({} as IContactContext);
 
 export const ContactsProvider = ({ children }: IdefaultProviderProps) => {
   const [isAddContactModalVisible, setAddContactModalVisible] = useState(false);
-  const [isEditContactModalVisible, setEditContactModalVisible] = useState(false);
+  const [isEditContactModalVisible, setEditContactModalVisible] =
+    useState(false);
   const [clickedContact, setClickedContact] = useState<IContacts | null>(null);
-  const { contacts, setContacts} = useContext(UserContext);
+  const { contacts, setContacts } = useContext(UserContext);
 
   const addContacts = async (data: IContacts) => {
     try {
       const contactResponse = await Api.post("/contacts", data);
       setContacts([...contacts, contactResponse.data]);
       console.log(contactResponse.data);
-      
+
       toast.success("Contato adicionado com sucesso");
       setAddContactModalVisible(false);
     } catch (error) {
@@ -39,15 +42,13 @@ export const ContactsProvider = ({ children }: IdefaultProviderProps) => {
     }
   };
 
-  useEffect(()=> {
-
+  useEffect(() => {
     const contactsList = async () => {
-      const contacts = await Api.get("/contacts")
-      setContacts(contacts.data)
-    }
-    contactsList()
-  }, [])
-
+      const contacts = await Api.get("/contacts");
+      setContacts(contacts.data);
+    };
+    contactsList();
+  }, []);
 
   const editContacts = async (data: IContacts, id: string) => {
     try {
@@ -61,13 +62,13 @@ export const ContactsProvider = ({ children }: IdefaultProviderProps) => {
 
   const deleteContacts = async (id: string) => {
     try {
-      await Api.delete(`/contacts/${id}`)
-      toast.success("Contato deletado com sucesso.")
+      await Api.delete(`/contacts/${id}`);
+      toast.success("Contato deletado com sucesso.");
       setEditContactModalVisible(!isEditContactModalVisible);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <ContactsContext.Provider

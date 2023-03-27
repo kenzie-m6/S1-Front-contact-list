@@ -54,12 +54,6 @@ export const ContactsProvider = ({ children }: IdefaultProviderProps) => {
       await Api.patch(`/contacts/${id}`, data);
       toast.success("Contato editado com sucesso.");
       setEditContactModalVisible(!isEditContactModalVisible);
-      // const editedContacts = contacts?.map(({id: contactId, title}: any) =>
-      //   contactId === id
-      //     && { ...contacts, title: title, status: data.status }
-          
-      // );
-      // setContacts(editedContacts);
     } catch (error) {
       console.log(error);
     }

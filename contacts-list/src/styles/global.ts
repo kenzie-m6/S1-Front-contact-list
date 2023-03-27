@@ -15,6 +15,18 @@ export const Reset = createGlobalStyle`
         border-color: transparent;
         cursor: pointer;
     }
+    li {
+        width: 90%;
+        display: flex;
+        gap: 1rem;
+    }
+
+    img {
+        max-width: 80px;
+        max-height: 80px;
+        border-radius: 6px;
+    }
+
 `;
 
 export const GlobalStyle = createGlobalStyle` 

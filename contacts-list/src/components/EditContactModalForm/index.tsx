@@ -18,7 +18,7 @@ export const EditContactForm = () => {
     return (
         <>
             <div className="headerModal">
-                <h3>Adicione uma tecnologia</h3>
+                <h3>Adicione um contato</h3>
                 <button
                 onClick={() => setEditContactModalVisible(!isEditContactModalVisible)}
                 >Fechar</button>

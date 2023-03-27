@@ -13,12 +13,16 @@ import { Api } from "../services/api";
 interface IUserContext {
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  user: IUser | null;
+  user: IUser;
   contacts: IContacts[];
   setContacts: React.Dispatch<React.SetStateAction<IContacts[]>>;
   onLogin: (data: ILoginInput) => Promise<void>;
   userLogout: () => Promise<void>;
   userRegister: (formData: IRegisterFormValues) => Promise<void>;
+  userEditProfile: (formData: IRegisterFormValues) => Promise<void>;
+  deleteUser: () => Promise<void>;
+  isEditUserModalVisible: boolean;
+  setEditUserModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const UserContext = createContext({} as IUserContext);
@@ -26,7 +30,8 @@ export const UserContext = createContext({} as IUserContext);
 export const UserProvider = ({ children }: IdefaultProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("@TOKEN"));
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser>({} as IUser);
+  const [isEditUserModalVisible, setEditUserModalVisible] = useState(false)
   const [contacts, setContacts] = useState<IContacts[]>([]);
 
   const navigate = useNavigate();
@@ -42,6 +47,30 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  };
+  const userEditProfile = async (formData: IRegisterFormValues): Promise<void> => {
+    try {
+      await Api.patch("/users", formData);
+
+      toast.success("Perfil editado com sucesso.");
+      setEditUserModalVisible(!isEditUserModalVisible)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteUser = async (): Promise<void> => {
+    try {
+      await Api.delete("/users");
+
+      toast.success("Perfil deletado com sucesso.");
+      setEditUserModalVisible(!isEditUserModalVisible)
+      setUser({}as IUser);
+      setToken(null);
+      localStorage.removeItem("@TOKEN");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -70,7 +99,7 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
   }, [token]);
 
   const userLogout = async () => {
-    setUser(null);
+    setUser({}as IUser);
     setToken(null);
     localStorage.removeItem("@TOKEN");
 
@@ -87,6 +116,10 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
         setContacts,
         userRegister,
         userLogout,
+        userEditProfile,
+        deleteUser,
+        setEditUserModalVisible,
+        isEditUserModalVisible,
       }}
     >
       {children}

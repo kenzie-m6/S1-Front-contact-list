@@ -15,8 +15,8 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit(submit)}>
-        <Input label="Seu e-mail" type="email" register={register("email")} error={errors.email} />
-        <Input label="Sua senha" type="password" register={register("password")} error={errors.password} />
+        <Input label="Seu e-mail" type="email" register={register("email")} defaultValue="" error={errors.email} />
+        <Input label="Sua senha" type="password" register={register("password")} defaultValue="" error={errors.password} />
         <button type="submit">Entrar</button>
     </form>
   )

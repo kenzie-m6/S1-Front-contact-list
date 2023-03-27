@@ -1,18 +1,21 @@
 import { useContext } from "react"
 import { Contacts } from "../../components/ContactsContainer"
+import { EditUserForm } from "../../components/EditUserForm"
 import { ContactsProvider } from "../../providers/ContactsContext"
 import { UserContext } from "../../providers/UserContext"
+import { Header } from "./Header"
 
 export const DashBoardPage = () =>{
-    const {user} = useContext(UserContext)
+    const {user, isEditUserModalVisible} = useContext(UserContext)
 
     return (
         <>
+        <Header/>
             <div>
-                <h2>Olá, {user?.fullName}</h2>
                 <p>Seu e-mail: {user?.email}</p>
                 <p>Seu Telefone: {user?.phone}</p>
             </div>
+            {isEditUserModalVisible && <EditUserForm/>}
             <ContactsProvider>
                 <Contacts/>
             </ContactsProvider>

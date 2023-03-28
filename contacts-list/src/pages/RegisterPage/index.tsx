@@ -3,7 +3,7 @@ import { RegisterForm } from "../../components/RegisterForm"
 
 export const RegisterPage = () => {
     return (
-        <div>
+        <div className="registerContainer">
           <Link to="/">Voltar</Link>
           <RegisterForm />
         </div>

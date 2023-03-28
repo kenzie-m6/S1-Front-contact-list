@@ -1,8 +1,6 @@
 import { IContacts, ILoginInput, IRegisterFormValues, IUser } from "./userInterfaces";
 
 export interface IUserContext {
-    loading: boolean;
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
     user: IUser;
     contacts: IContacts[];
     setContacts: React.Dispatch<React.SetStateAction<IContacts[]>>;

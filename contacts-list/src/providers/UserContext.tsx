@@ -14,25 +14,22 @@ import { Api } from "../services/api";
 export const UserContext = createContext({} as IUserContext);
 
 export const UserProvider = ({ children }: IdefaultProviderProps) => {
-  const [loading, setLoading] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("@TOKEN"));
   const [user, setUser] = useState<IUser>({} as IUser);
   const [isEditUserModalVisible, setEditUserModalVisible] = useState(false)
   const [contacts, setContacts] = useState<IContacts[]>([]);
-
+console.log(user)
   const navigate = useNavigate();
 
   const userRegister = async (formData: IRegisterFormValues): Promise<void> => {
     try {
       await Api.post("/users", formData);
 
-      setLoading(true);
       toast.success("Cadastro realizado com sucesso.");
       navigate("/");
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false);
     }
   };
 
@@ -95,7 +92,6 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
   }, [token]);
 
   const userLogout = async () => {
-    setUser({}as IUser);
     setToken(null);
     localStorage.removeItem("@TOKEN");
 
@@ -104,8 +100,6 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
   return (
     <UserContext.Provider
       value={{
-        loading,
-        setLoading,
         onLogin,
         user,
         contacts,

@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { IRegisterFormValues } from "../../interfaces/userInterfaces";
 import { UserContext } from "../../providers/UserContext";
 import { Input } from "../Input";
-
+import {Form} from "../../styles/form"
 export const RegisterForm = () => {
   const {
     register,
@@ -16,7 +16,7 @@ export const RegisterForm = () => {
     userRegister(formData);
   };
   return (
-      <form onSubmit={handleSubmit(submit)}>
+      <Form onSubmit={handleSubmit(submit)}>
           <Input type="text" label="Nome completo" register={register("fullName")} defaultValue="" error={errors.fullName} />
           <Input type="email" label="Seu e-mail" register={register("email")} defaultValue="" error={errors.email} />
           <Input type="email" label="E-mail secundário" register={register("secondaryEmail")} defaultValue="" error={errors.secondaryEmail} />
@@ -24,6 +24,6 @@ export const RegisterForm = () => {
           <Input type="text" label="número de contato" register={register("phone")} defaultValue="" error={errors.phone} />
           <Input type="text" label="imagem de perfil" register={register("profileImg")} defaultValue="" error={errors.profileImg} />
         <button type="submit">Enviar</button>
-      </form>
+      </Form>
   );
 };

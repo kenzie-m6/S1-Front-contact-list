@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { IUserContext } from "../interfaces/contextsInterfaces";
 import { IdefaultProviderProps } from "../interfaces/reactDefaultInterfaces";
 import {
   IContacts,
@@ -9,21 +10,6 @@ import {
   IUser,
 } from "../interfaces/userInterfaces";
 import { Api } from "../services/api";
-
-interface IUserContext {
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  user: IUser;
-  contacts: IContacts[];
-  setContacts: React.Dispatch<React.SetStateAction<IContacts[]>>;
-  onLogin: (data: ILoginInput) => Promise<void>;
-  userLogout: () => Promise<void>;
-  userRegister: (formData: IRegisterFormValues) => Promise<void>;
-  userEditProfile: (formData: IRegisterFormValues) => Promise<void>;
-  deleteUser: () => Promise<void>;
-  isEditUserModalVisible: boolean;
-  setEditUserModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export const UserContext = createContext({} as IUserContext);
 

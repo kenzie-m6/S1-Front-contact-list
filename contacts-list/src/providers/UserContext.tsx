@@ -18,7 +18,7 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
   const [user, setUser] = useState<IUser>({} as IUser);
   const [isEditUserModalVisible, setEditUserModalVisible] = useState(false)
   const [contacts, setContacts] = useState<IContacts[]>([]);
-console.log(user)
+  
   const navigate = useNavigate();
 
   const userRegister = async (formData: IRegisterFormValues): Promise<void> => {
@@ -33,12 +33,12 @@ console.log(user)
     }
   };
 
+  const profile = async () => {
+    const response = await Api.get("/users/user")
+    setUser(response.data)
+    setContacts(response.data.contacts)
+  }
   useEffect(() =>{
-    const profile = async () => {
-      const response = await Api.get("/users/user")
-      setUser(response.data)
-      setContacts(response.data.contacts)
-    }
     profile()
   }, [token])
 
@@ -70,10 +70,10 @@ console.log(user)
   const onLogin = async (data: ILoginInput) => {
     try {
       const res = await Api.post("/login", data);
-
       toast.success("Login realizado com sucesso");
       setToken(res.data.token)
       localStorage.setItem("@TOKEN", res.data.token);
+      await profile()
       navigate("/dashboard");
     } catch (e) {
       console.log(e);
@@ -82,8 +82,7 @@ console.log(user)
   };
 
   useEffect(() => {
-    !token && navigate("/");
-    token && navigate("/dashboard");
+    token ? navigate("/dashboard"):navigate("/") 
     const userinfo = async () => {
       const profile = await Api.get("/users/user");
       setUser(profile.data);
@@ -94,7 +93,6 @@ console.log(user)
   const userLogout = async () => {
     setToken(null);
     localStorage.removeItem("@TOKEN");
-
     navigate("/");
   };
   return (

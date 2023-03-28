@@ -51,6 +51,8 @@ export const ContactsProvider = ({ children }: IdefaultProviderProps) => {
     try {
       await Api.delete(`/contacts/${id}`);
       toast.success("Contato deletado com sucesso.");
+      const newContacts = contacts.filter(contact => contact.id !== id)
+      setContacts(newContacts)
       setEditContactModalVisible(!isEditContactModalVisible);
     } catch (err) {
       console.log(err);

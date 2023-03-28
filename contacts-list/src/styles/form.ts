@@ -7,6 +7,12 @@ export const Form = styled.form`
   max-width: 400px;
   margin: 0 auto;
 
+  .buttonContainer {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
   @media screen and (min-width: 768px) {
     max-width: 600px;
     
@@ -30,6 +36,7 @@ export const Form = styled.form`
           cursor: not-allowed;
         }
     }
+
   }
 `;
 

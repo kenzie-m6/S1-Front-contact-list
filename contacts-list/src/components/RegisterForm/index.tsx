@@ -4,6 +4,7 @@ import { IRegisterFormValues } from "../../interfaces/userInterfaces";
 import { UserContext } from "../../providers/UserContext";
 import { Input } from "../Input";
 import {Form} from "../../styles/form"
+import { StyledButton } from "../../styles/buttons";
 export const RegisterForm = () => {
   const {
     register,
@@ -23,7 +24,7 @@ export const RegisterForm = () => {
           <Input type="password" label="Crie uma senha" register={register("password")} defaultValue="" error={errors.password} />
           <Input type="text" label="número de contato" register={register("phone")} defaultValue="" error={errors.phone} />
           <Input type="text" label="imagem de perfil" register={register("profileImg")} defaultValue="" error={errors.profileImg} />
-        <button type="submit">Enviar</button>
+        <StyledButton type="submit">Enviar</StyledButton>
       </Form>
   );
 };

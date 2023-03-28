@@ -1,22 +1,7 @@
-# S1-Front-contact-list
+### Contacts List Front
 
-### Install tun tests and use API with yarn
-
-Install dependencies:
+#### Clone this repository and run to install dependencies and run the application:
 ```bash
 yarn install
-```
-### Set the enviroment variables on .env file and:
-
-Run tests:
-```bash
-yarn test
-```
-
-Run application
-```
 yarn dev
 ```
-
-
-### Imsomnia Documentation

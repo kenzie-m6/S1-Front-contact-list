@@ -6,6 +6,7 @@ align-items: center;
 justify-content: center;
 gap: 0.8rem;
 
+border-radius: 6px;
 padding: 0 1rem;
 height: 2rem;
 

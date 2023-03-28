@@ -1,23 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { IContactContext } from "../interfaces/contextsInterfaces";
 import { IdefaultProviderProps } from "../interfaces/reactDefaultInterfaces";
 import { IContacts } from "../interfaces/userInterfaces";
 import { Api } from "../services/api";
 import { UserContext } from "./UserContext";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-
-interface IContactContext {
-  addContacts: (data: IContacts) => Promise<void>;
-  editContacts: (data: IContacts, id: string) => Promise<void>;
-  deleteContacts: (id: string) => Promise<void>;
-  isAddContactModalVisible: boolean;
-  setAddContactModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  isEditContactModalVisible: boolean;
-  setEditContactModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  clickedContact: IContacts | null;
-  setClickedContact: React.Dispatch<React.SetStateAction<IContacts | null>>;
-}
 
 export const ContactsContext = createContext({} as IContactContext);
 

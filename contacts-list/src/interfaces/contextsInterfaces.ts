@@ -2,9 +2,9 @@ import { IContacts, ILoginInput, IRegisterFormValues, IUser } from "./userInterf
 
 export interface IUserContext {
     user: IUser;
-    contacts: IContacts[];
-    setContacts: React.Dispatch<React.SetStateAction<IContacts[]>>;
+    // setContacts: React.Dispatch<React.SetStateAction<IContacts[]>>;
     onLogin: (data: ILoginInput) => Promise<void>;
+    profile: () => Promise<void>;
     userLogout: () => Promise<void>;
     userRegister: (formData: IRegisterFormValues) => Promise<void>;
     userEditProfile: (formData: IRegisterFormValues) => Promise<void>;
@@ -12,8 +12,11 @@ export interface IUserContext {
     isEditUserModalVisible: boolean;
     setEditUserModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   }
-
+  
   export interface IContactContext {
+    contacts: IContacts[];
+    setContacts:React.Dispatch<React.SetStateAction<IContacts[]>>;
+    listContacts: () => Promise<void>;
     addContacts: (data: IContacts) => Promise<void>;
     editContacts: (data: IContacts, id: string) => Promise<void>;
     deleteContacts: (id: string) => Promise<void>;

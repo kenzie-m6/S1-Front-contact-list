@@ -35,6 +35,16 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
       setLoading(false);
     }
   };
+
+  useEffect(() =>{
+    const profile = async () => {
+      const response = await Api.get("/users/user")
+      setUser(response.data)
+      setContacts(response.data.contacts)
+    }
+    profile()
+  }, [token])
+
   const userEditProfile = async (formData: IRegisterFormValues): Promise<void> => {
     try {
       await Api.patch("/users", formData);
@@ -65,7 +75,7 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
       const res = await Api.post("/login", data);
 
       toast.success("Login realizado com sucesso");
-
+      setToken(res.data.token)
       localStorage.setItem("@TOKEN", res.data.token);
       navigate("/dashboard");
     } catch (e) {

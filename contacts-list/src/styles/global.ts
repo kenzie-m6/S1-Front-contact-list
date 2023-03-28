@@ -31,6 +31,19 @@ export const Reset = createGlobalStyle`
         max-height: 80px;
         border-radius: 6px;
     }
+    
+    .App{
+        height: 100vh;
+        padding: 1rem;
+    }
+    .loginContainer, .registerContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: 10px;
+    }
 
 `;
 

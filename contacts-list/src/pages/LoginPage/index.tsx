@@ -3,7 +3,7 @@ import { LoginForm } from "../../components/LoginForm"
 
 export const LoginPage = () =>{
     return (
-        <div>
+        <div className="loginContainer">
           <LoginForm />
           <Link to="/register">Cadastre-se</Link>
         </div>

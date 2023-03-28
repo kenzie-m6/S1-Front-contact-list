@@ -1,10 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IUserContext } from "../interfaces/contextsInterfaces";
 import { IdefaultProviderProps } from "../interfaces/reactDefaultInterfaces";
 import {
-  IContacts,
   ILoginInput,
   IRegisterFormValues,
   IUser,
@@ -16,15 +15,13 @@ export const UserContext = createContext({} as IUserContext);
 export const UserProvider = ({ children }: IdefaultProviderProps) => {
   const [token, setToken] = useState(localStorage.getItem("@TOKEN"));
   const [user, setUser] = useState<IUser>({} as IUser);
-  const [isEditUserModalVisible, setEditUserModalVisible] = useState(false)
-  const [contacts, setContacts] = useState<IContacts[]>([]);
-  
+  const [isEditUserModalVisible, setEditUserModalVisible] = useState(false);
+
   const navigate = useNavigate();
 
   const userRegister = async (formData: IRegisterFormValues): Promise<void> => {
     try {
       await Api.post("/users", formData);
-
       toast.success("Cadastro realizado com sucesso.");
       navigate("/");
     } catch (error) {
@@ -32,22 +29,31 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
     } finally {
     }
   };
+  
 
   const profile = async () => {
-    const response = await Api.get("/users/user")
-    setUser(response.data)
-    setContacts(response.data.contacts)
-  }
-  useEffect(() =>{
-    profile()
-  }, [token])
+    try {
+      const response = await Api.get("/users/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(response.data);
+      // localStorage.setItem(JSON.stringify(response.data.contacts));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  // useEffect(() =>{
+  //   profile()
+  // }, [token])
 
-  const userEditProfile = async (formData: IRegisterFormValues): Promise<void> => {
+  const userEditProfile = async (
+    formData: IRegisterFormValues
+  ): Promise<void> => {
     try {
       await Api.patch("/users", formData);
 
       toast.success("Perfil editado com sucesso.");
-      setEditUserModalVisible(!isEditUserModalVisible)
+      setEditUserModalVisible(!isEditUserModalVisible);
     } catch (error) {
       console.log(error);
     }
@@ -57,8 +63,8 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
       await Api.delete("/users");
 
       toast.success("Perfil deletado com sucesso.");
-      setEditUserModalVisible(!isEditUserModalVisible)
-      setUser({}as IUser);
+      setEditUserModalVisible(!isEditUserModalVisible);
+      setUser({} as IUser);
       setToken(null);
       localStorage.removeItem("@TOKEN");
       navigate("/");
@@ -71,9 +77,9 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
     try {
       const res = await Api.post("/login", data);
       toast.success("Login realizado com sucesso");
-      setToken(res.data.token)
+      setToken(res.data.token);
       localStorage.setItem("@TOKEN", res.data.token);
-      await profile()
+      profile();
       navigate("/dashboard");
     } catch (e) {
       console.log(e);
@@ -81,14 +87,14 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
     }
   };
 
-  useEffect(() => {
-    token ? navigate("/dashboard"):navigate("/") 
-    const userinfo = async () => {
-      const profile = await Api.get("/users/user");
-      setUser(profile.data);
-    };
-    userinfo();
-  }, [token]);
+  // useEffect(() => {
+  //   token ? navigate("/dashboard") : navigate("/");
+  //   const userinfo = async () => {
+  //     const profile = await Api.get("/users/user");
+  //     setUser(profile.data);
+  //   };
+  //   userinfo();
+  // }, [token]);
 
   const userLogout = async () => {
     setToken(null);
@@ -98,10 +104,9 @@ export const UserProvider = ({ children }: IdefaultProviderProps) => {
   return (
     <UserContext.Provider
       value={{
+        profile,
         onLogin,
         user,
-        contacts,
-        setContacts,
         userRegister,
         userLogout,
         userEditProfile,

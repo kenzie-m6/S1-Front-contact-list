@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { IContactContext } from "../interfaces/contextsInterfaces";
 import { IdefaultProviderProps } from "../interfaces/reactDefaultInterfaces";
@@ -11,6 +11,7 @@ export const ContactsContext = createContext({} as IContactContext);
 export const ContactsProvider = ({ children }: IdefaultProviderProps) => {
   const [isAddContactModalVisible, setAddContactModalVisible] = useState(false);
   const [isEditContactModalVisible, setEditContactModalVisible] = useState(false);
+  const [editedContact, setEditedcontact] = useState<IContacts | null>(null);
   const [clickedContact, setClickedContact] = useState<IContacts | null>(null);
   const { contacts, setContacts, token } = useContext(UserContext);
 
@@ -34,17 +35,29 @@ export const ContactsProvider = ({ children }: IdefaultProviderProps) => {
 
   const editContacts = async (data: IContacts, id: string) => {
     try {
-      await Api.patch(`/contacts/${id}`, data, {
+      const editContactResponse = await Api.patch(`/contacts/${id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      setEditedcontact(editContactResponse.data);
       toast.success("Contato editado com sucesso.");
       setEditContactModalVisible(!isEditContactModalVisible);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (editedContact) {
+      const updated = contacts.map((contact) =>
+        contact.id === editedContact.id ?
+        editedContact : contact
+      );
+
+      setContacts(updated);
+    }
+  }, [editedContact]);
 
   const deleteContacts = async (id: string) => {
     try {

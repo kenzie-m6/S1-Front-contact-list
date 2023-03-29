@@ -6,6 +6,8 @@ import { EditContactForm } from "../EditContactModalForm";
 import { ContactsList } from "./ContactsList";
 import { Document, Page } from "@react-pdf/renderer";
 import { Api } from "../../services/api";
+import { StyledButton } from "../../styles/buttons";
+import { ContactsContainer } from "../../styles/contacts";
 
 export const Contacts = () => {
   const {
@@ -31,13 +33,15 @@ export const Contacts = () => {
   }, []);
 
   return (
-    <>
+    <ContactsContainer>
+    <div className="addContacts">
       <h2>Adicionando um contato</h2>
-      <button
+      <StyledButton
         onClick={() => setAddContactModalVisible(!isAddContactModalVisible)}
       >
         +
-      </button>
+      </StyledButton>
+    </div>
       {contacts?.length ? (
         <Document>
           <Page>
@@ -53,6 +57,6 @@ export const Contacts = () => {
       )}
       {isAddContactModalVisible && <AddContactForm />}
       {isEditContactModalVisible && <EditContactForm />}
-    </>
+    </ContactsContainer>
   );
 };

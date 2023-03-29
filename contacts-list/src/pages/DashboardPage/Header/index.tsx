@@ -7,20 +7,23 @@ import { Contacts } from "../../../components/ContactsContainer";
 import { HeaderContainer } from "../../../styles/header";
 
 export const Header = () => {
-  const {
-    user,
-    userLogout,
-    setEditUserModalVisible,
-    isEditUserModalVisible,
-  } = useContext(UserContext);
+  const { user, userLogout, setEditUserModalVisible, isEditUserModalVisible } =
+    useContext(UserContext);
   const openModal = (user: IUser) => {
     setEditUserModalVisible(!isEditUserModalVisible);
   };
   return (
     <HeaderContainer>
-      <div>
-        <img src={user.profileImg ? user.profileImg : ""} alt={user.fullName} />
-        <h2>Sua lista de contatos, {user.fullName}</h2>
+      <div className="userInfo">
+        <div className="greeting">
+          <img
+            src={user.profileImg ? user.profileImg : ""}
+            alt={user.fullName}
+          />
+          <h2>Sua lista de contatos, {user.fullName}</h2>
+        </div>
+        <p>Seu e-mail: {user?.email}</p>
+        <p>Seu Telefone: {user?.phone}</p>
       </div>
 
       <div className="ButtonsContainer">

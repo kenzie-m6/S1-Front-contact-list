@@ -13,9 +13,9 @@ export const Contacts = () => {
     setAddContactModalVisible,
     isEditContactModalVisible,
   } = useContext(ContactsContext);
-  const {    contacts,
-    setContacts,} = useContext(UserContext)
-const token = localStorage.getItem("@TOKEN")
+  const { contacts, setContacts } = useContext(UserContext);
+  
+  const token = localStorage.getItem("@TOKEN");
   useEffect(() => {
     const listContacts = async () => {
       try {

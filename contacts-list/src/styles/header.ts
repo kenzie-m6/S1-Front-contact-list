@@ -13,10 +13,17 @@ export const HeaderContainer = styled.header`
     gap: 1rem;
     text-align: center;
   }
+
+.userInfo{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
   div {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .5rem;
 
     div > img {
       width: 50px;

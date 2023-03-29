@@ -12,10 +12,9 @@ export const Contacts = () => {
     isAddContactModalVisible,
     setAddContactModalVisible,
     isEditContactModalVisible,
-    // listContacts,
-    contacts,
-    setContacts,
   } = useContext(ContactsContext);
+  const {    contacts,
+    setContacts,} = useContext(UserContext)
 const token = localStorage.getItem("@TOKEN")
   useEffect(() => {
     const listContacts = async () => {

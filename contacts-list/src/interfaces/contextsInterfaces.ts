@@ -2,7 +2,9 @@ import { IContacts, ILoginInput, IRegisterFormValues, IUser } from "./userInterf
 
 export interface IUserContext {
     user: IUser;
-    // setContacts: React.Dispatch<React.SetStateAction<IContacts[]>>;
+    token: string | null;
+    contacts: IContacts[];
+    setContacts:React.Dispatch<React.SetStateAction<IContacts[]>>;
     onLogin: (data: ILoginInput) => Promise<void>;
     profile: () => Promise<void>;
     userLogout: () => Promise<void>;
@@ -14,9 +16,6 @@ export interface IUserContext {
   }
   
   export interface IContactContext {
-    contacts: IContacts[];
-    setContacts:React.Dispatch<React.SetStateAction<IContacts[]>>;
-    listContacts: () => Promise<void>;
     addContacts: (data: IContacts) => Promise<void>;
     editContacts: (data: IContacts, id: string) => Promise<void>;
     deleteContacts: (id: string) => Promise<void>;

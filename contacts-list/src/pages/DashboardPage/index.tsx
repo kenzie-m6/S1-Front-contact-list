@@ -1,18 +1,15 @@
 import { useContext, useEffect } from "react";
 import { Contacts } from "../../components/ContactsContainer";
 import { EditUserForm } from "../../components/EditUserForm";
-import { ContactsContext, ContactsProvider } from "../../providers/ContactsContext";
 import { UserContext } from "../../providers/UserContext";
 import { Header } from "./Header";
 
-export const DashBoardPage = () => {
-  const { user, isEditUserModalVisible, profile } = useContext(UserContext);
-  const { listContacts} = useContext(ContactsContext);
+export const DashBoardPage = () =>{
+    const {user, isEditUserModalVisible, profile} = useContext(UserContext)
 
-  useEffect(() => {
-    profile();
-    // listContacts();
-  }, []);
+  useEffect(() =>{
+    profile()
+  }, [])
 
   return (
     <>

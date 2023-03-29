@@ -14,10 +14,6 @@ export const DashBoardPage = () =>{
   return (
     <>
       <Header />
-      <div>
-        <p>Seu e-mail: {user?.email}</p>
-        <p>Seu Telefone: {user?.phone}</p>
-      </div>
       {isEditUserModalVisible && <EditUserForm />}
         <Contacts />
     </>
